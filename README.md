@@ -2,5 +2,5 @@
 
 instructions for installation:
 
-cargo install wasm-pack
+cargo install wasm-pack && 
 wasm-pack build --target web
