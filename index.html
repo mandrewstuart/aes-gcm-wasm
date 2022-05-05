@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>hello-wasm example</title>
+</head>
+
+<body>
+
+  32-character key: <textarea id="key"></textarea><br>
+  12-character nonce <textarea id="nonce"></textarea><br>
+  To encrypt: <textarea id="plaintext"></textarea><br>
+  <button id="encrypt">encrypt</button><br>
+  Encrypted: <textarea id="ciphertext"></textarea>
+
+  <hr>
+
+  32-character key: <textarea id="key2"></textarea><br>
+  12-character nonce <textarea id="nonce2"></textarea><br>
+  <button id="decrypt">decrypt</button><br>
+  Decrypted: <textarea id="plaintext2"></textarea>
+  <script type="module">
+    import init, { encrypt, decrypt } from "./pkg/aes_gcm.js";
+    init()
+      .then(() => {
+        document.getElementById("encrypt").addEventListener("click", () => {
+          const plaintext = document.getElementById("plaintext").value;
+          const key = document.getElementById("key").value;
+          const nonce = document.getElementById("nonce").value;
+          if (key.length != 32) {
+            alert("the key must be 32 characters");
+            return;
+          }
+          if (nonce.length != 12) {
+            alert("the nonce must be 12 characters");
+            return;
+          }
+          document.getElementById("ciphertext").innerHTML = encrypt(plaintext, key, nonce);
+        })
+        document.getElementById("decrypt").addEventListener("click", () => {
+          const ciphertext = document.getElementById("ciphertext").value;
+          const key2 = document.getElementById("key2").value;
+          const nonce2 = document.getElementById("nonce2").value;
+          if (key2.length != 32) {
+            alert("the key must be 32 characters");
+            return;
+          }
+          if (nonce2.length != 12) {
+            alert("the nonce must be 12 characters");
+            return;
+          }
+          document.getElementById("plaintext2").value = decrypt(ciphertext, key2, nonce2);
+        })
+      })
+  </script>
+</body>
+
+</html>
